@@ -1,3 +1,3 @@
 const useDarkMode = () => {
-  return <div></div>;
+  console.log("useDarkMode");
 };

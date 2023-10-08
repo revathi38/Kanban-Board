@@ -3,6 +3,7 @@ import iconDown from "../assets/icon-chevron-down.svg";
 import iconUp from "../assets/icon-chevron-up.svg";
 import { useState } from "react";
 import ellipsis from "../assets/icon-vertical-ellipsis.svg";
+import HeaderDropDown from "./HeaderDropDown";
 
 type Props = {};
 
@@ -39,6 +40,7 @@ function Header({}: Props) {
           />
         </div>
       </header>
+      {openDropDown && <HeaderDropDown setOpenDropDown={setOpenDropDown} />}
     </div>
   );
 }
