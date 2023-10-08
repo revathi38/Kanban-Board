@@ -45,3 +45,9 @@ git branch -M main
 git remote add origin https://github.com/revathi38/Kanban-Board.git
 git push -u origin main
 ```
+
+- Redux installation
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
