@@ -5,13 +5,24 @@ import boardIcon from "../assets/icon-board.svg";
 import lightIcon from "../assets/icon-light-theme.svg";
 import darkIcon from "../assets/icon-dark-theme.svg";
 import { Switch } from "@headlessui/react";
+import useDarkMode from "../hooks/useDarkMode";
 
 type HeaderDropDownProps = {
   setOpenDropDown: (val: boolean) => void;
 };
 
 const HeaderDropDown: React.FC<HeaderDropDownProps> = ({ setOpenDropDown }) => {
-  const [enabled, setEnabled] = useState<boolean>(false);
+  const [colorTheme, setTheme] = useDarkMode();
+
+  const [darkSide, setDarkSide] = useState<boolean>(
+    colorTheme === "light" ? true : false
+  );
+
+  const toggleDarkMode = () => {
+    setDarkSide((prevState) => !prevState);
+    setTheme(colorTheme);
+  };
+
   const boards = useSelector((state: RootState) => state.boards);
   console.log(boards);
   return (
@@ -53,16 +64,16 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({ setOpenDropDown }) => {
           <div className="flex items-center justify-center bg-slate-100 dark:bg-[#20212c] p-4 mx-2 rounded-lg space-x-2">
             <img src={lightIcon} alt="sun indicating lightmode" />
             <Switch
-              checked={enabled}
-              onChange={setEnabled}
+              checked={darkSide}
+              onChange={toggleDarkMode}
               className={`${
-                enabled ? "bg-blue-600" : "bg-gray-200"
+                darkSide ? "bg-blue-600" : "bg-gray-200"
               } relative inline-flex h-6 w-11 items-center rounded-full`}
             >
               <span className="sr-only">Enable notifications</span>
               <span
                 className={`${
-                  enabled ? "translate-x-6" : "translate-x-1"
+                  darkSide ? "translate-x-6" : "translate-x-1"
                 } inline-block h-4 w-4 transform rounded-full bg-white transition`}
               />
             </Switch>
