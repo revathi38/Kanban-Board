@@ -8,10 +8,14 @@ import { Switch } from "@headlessui/react";
 import useDarkMode from "../hooks/useDarkMode";
 
 type HeaderDropDownProps = {
+  setBoardOpen: (val: boolean) => void;
   setOpenDropDown: (val: boolean) => void;
 };
 
-const HeaderDropDown: React.FC<HeaderDropDownProps> = ({ setOpenDropDown }) => {
+const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
+  setBoardOpen,
+  setOpenDropDown,
+}) => {
   const [colorTheme, setTheme] = useDarkMode();
 
   const [darkSide, setDarkSide] = useState<boolean>(
@@ -57,7 +61,13 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({ setOpenDropDown }) => {
               </>
             );
           })}
-          <div className={`px-5 py-4 flex items-baseline space-x-2 `}>
+          <div
+            className={`px-5 py-4 flex items-baseline space-x-2 `}
+            onClick={() => {
+              setOpenDropDown(false);
+              setBoardOpen(true);
+            }}
+          >
             <img src={boardIcon} alt="board icon" className="h-4" />
             <p className="font-bold text-lg text-[#635fc7]">Create New Board</p>
           </div>

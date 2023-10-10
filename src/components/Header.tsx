@@ -4,11 +4,16 @@ import iconUp from "../assets/icon-chevron-up.svg";
 import { useState } from "react";
 import ellipsis from "../assets/icon-vertical-ellipsis.svg";
 import HeaderDropDown from "./HeaderDropDown";
+import CreateEditBoardModal from "../modals/CreateEditBoardModal";
 
-type Props = {};
+type HeaderProps = {
+  boardOpen: boolean;
+  setBoardOpen: (val: boolean) => void;
+};
 
-function Header({}: Props) {
+function Header({ boardOpen, setBoardOpen }: HeaderProps) {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
+  console.log(boardOpen);
   return (
     <div className="p-4 fixed bg-white dark:bg-[#2b2c37] z-50 right-0 left-0">
       <header className="flex justify-between dark:text-white items-center">
@@ -40,7 +45,15 @@ function Header({}: Props) {
           />
         </div>
       </header>
-      {openDropDown && <HeaderDropDown setOpenDropDown={setOpenDropDown} />}
+
+      {openDropDown && (
+        <HeaderDropDown
+          setBoardOpen={setBoardOpen}
+          setOpenDropDown={setOpenDropDown}
+        />
+      )}
+
+      {boardOpen && <CreateEditBoardModal setBoardOpen={setBoardOpen} />}
     </div>
   );
 }
