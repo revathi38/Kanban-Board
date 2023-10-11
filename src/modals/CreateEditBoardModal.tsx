@@ -1,37 +1,27 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import crossIcon from "../assets/icon-cross.svg";
+import { Column } from "../global";
+import { useDispatch } from "react-redux";
+import { createBoard } from "../redux/boardsSlice";
 
 type CreateEditBoardModalProps = {
   setBoardOpen: (val: boolean) => void;
 };
-
-interface Column {
-  name: string;
-  tasks: Array<Task>;
-  id: string;
-}
-
-interface Task {
-  title: string;
-  description: string;
-  status: string;
-  subtasks: Array<SubTask>;
-}
-
-interface SubTask {
-  title: string;
-  isCompleted: boolean;
-}
 
 const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
   const [newColumns, setNewColumns] = useState<Column[]>([
     { name: "Todo", tasks: [], id: uuidv4() },
     { name: "Doing", tasks: [], id: uuidv4() },
   ]);
+
+  const [boardName, setBoardName] = useState<string>("");
+
+  const dispatch = useDispatch();
+
   return (
     <div
-      className="py-4 px-2 top-0 bottom-0 left-0 right-0 dropdown z-50 fixed flex justify-center items-center  scrollbar-hide"
+      className="py-4 px-2 top-0 bottom-0 left-0 right-0 dropdown z-50 fixed flex justify-center items-center  scrollbar-hide overflow-scroll"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -39,7 +29,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
         setBoardOpen(false);
       }}
     >
-      <div className="bg-white max-h-[95vh] w-full dark:bg-[#2b2c37] font-bold text-black dark:text-white p-8 rounded-xl shadow-md shadow-[#364e7e1a] max-w-md m-auto scrollbar-hide">
+      <div className="bg-white max-h-[95vh] w-full dark:bg-[#2b2c37] font-bold text-black dark:text-white p-8 rounded-xl shadow-md shadow-[#364e7e1a] max-w-md m-auto scrollbar-hide overflow-y-scroll">
         <h3 className="text-lg">Add New Board</h3>
 
         {/* Board Name */}
@@ -55,6 +45,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
             type="text"
             placeholder="e.g Web Design"
             className="bg-transparent border-[0.5px] border-gray-600 px-4 py-2 rounded-md outline-1 focus:outline-[#635f67] ring-0"
+            onChange={(e) => setBoardName(e.target.value)}
           />
         </div>
 
@@ -81,6 +72,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
               </>
             );
           })}
+
           <div className="flex flex-col gap-10 mt-10">
             <button
               className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white"
@@ -93,7 +85,19 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
             >
               + Add New Column
             </button>
-            <button className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white">
+
+            <button
+              className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white"
+              onClick={() => {
+                dispatch(
+                  createBoard({
+                    id: uuidv4(),
+                    name: boardName,
+                    columns: newColumns,
+                  })
+                );
+              }}
+            >
               Create New Board
             </button>
           </div>

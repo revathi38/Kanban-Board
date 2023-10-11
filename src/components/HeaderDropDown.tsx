@@ -50,7 +50,7 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
               <>
                 <div
                   key={index}
-                  className={`px-5 py-4 flex items-baseline space-x-2 ${
+                  className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer ${
                     board.isActive &&
                     `bg-[#635fc7] rounded-r-full text-white mr-8`
                   }`}
@@ -62,14 +62,16 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
             );
           })}
           <div
-            className={`px-5 py-4 flex items-baseline space-x-2 `}
+            className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer `}
             onClick={() => {
               setOpenDropDown(false);
               setBoardOpen(true);
             }}
           >
             <img src={boardIcon} alt="board icon" className="h-4" />
-            <p className="font-bold text-lg text-[#635fc7]">Create New Board</p>
+            <p className="font-bold text-lg text-[#635fc7] ">
+              Create New Board
+            </p>
           </div>
           <div className="flex items-center justify-center bg-slate-100 dark:bg-[#20212c] p-4 mx-2 rounded-lg space-x-2">
             <img src={lightIcon} alt="sun indicating lightmode" />
