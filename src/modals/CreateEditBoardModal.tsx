@@ -19,6 +19,17 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
 
   const dispatch = useDispatch();
 
+  function handleColumnInput(id: string, newColumnName: string) {
+    setNewColumns((prev: Column[]) => {
+      const arr = [...prev];
+      const column = arr.find((col: Column) => {
+        return col.id === id;
+      }) as Column;
+      column.name = newColumnName;
+      return arr;
+    });
+  }
+
   return (
     <div
       className="py-4 px-2 top-0 bottom-0 left-0 right-0 dropdown z-50 fixed flex justify-center items-center  scrollbar-hide overflow-scroll"
@@ -44,6 +55,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
             id="board-name-input"
             type="text"
             placeholder="e.g Web Design"
+            value={boardName}
             className="bg-transparent border-[0.5px] border-gray-600 px-4 py-2 rounded-md outline-1 focus:outline-[#635f67] ring-0"
             onChange={(e) => setBoardName(e.target.value)}
           />
@@ -57,11 +69,14 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
           {newColumns.map((column: Column) => {
             return (
               <>
-                <div className="flex items-center w-full">
+                <div className="flex items-center w-full" key={column.id}>
                   <input
                     className="bg-transparent border-[0.5px] border-gray-600 px-4 py-2 rounded-md outline-[1px] focus:outline-[#635f67] flex-grow"
                     value={column.name}
                     type="text"
+                    onChange={(e) =>
+                      handleColumnInput(column.id, e.target.value)
+                    }
                   />
                   <img
                     src={crossIcon}
@@ -96,6 +111,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
                     columns: newColumns,
                   })
                 );
+                setBoardOpen(false);
               }}
             >
               Create New Board

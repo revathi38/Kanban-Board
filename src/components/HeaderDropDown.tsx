@@ -45,11 +45,11 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
           All Boards {`(${boards.length})`}
         </h3>
         <div>
-          {boards.map((board, index) => {
+          {boards.map((board) => {
             return (
               <>
                 <div
-                  key={index}
+                  key={board.id}
                   className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer ${
                     board.isActive &&
                     `bg-[#635fc7] rounded-r-full text-white mr-8`
