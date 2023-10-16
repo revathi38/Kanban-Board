@@ -7,9 +7,14 @@ import { createBoard } from "../redux/boardsSlice";
 
 type CreateEditBoardModalProps = {
   setBoardOpen: (val: boolean) => void;
+
+  boardType: "add" | "edit";
 };
 
-const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
+const CreateEditBoardModal = ({
+  setBoardOpen,
+  boardType,
+}: CreateEditBoardModalProps) => {
   const [newColumns, setNewColumns] = useState<Column[]>([
     { name: "Todo", tasks: [], id: uuidv4() },
     { name: "Doing", tasks: [], id: uuidv4() },
@@ -41,7 +46,9 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
       }}
     >
       <div className="bg-white max-h-[95vh] w-full dark:bg-[#2b2c37] font-bold text-black dark:text-white p-8 rounded-xl shadow-md shadow-[#364e7e1a] max-w-md m-auto scrollbar-hide overflow-y-scroll">
-        <h3 className="text-lg">Add New Board</h3>
+        <h3 className="text-lg">
+          {boardType === "edit" ? "Edit " : "Add New "}Board
+        </h3>
 
         {/* Board Name */}
         <div className="flex flex-col space-y-1 mt-8">
@@ -90,7 +97,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
 
           <div className="flex flex-col gap-10 mt-10">
             <button
-              className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white"
+              className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white "
               onClick={() => {
                 setNewColumns((prevState) => [
                   ...prevState,
@@ -114,7 +121,7 @@ const CreateEditBoardModal = ({ setBoardOpen }: CreateEditBoardModalProps) => {
                 setBoardOpen(false);
               }}
             >
-              Create New Board
+              {boardType === "edit" ? "Save Changes" : "Create New Board"}
             </button>
           </div>
         </div>

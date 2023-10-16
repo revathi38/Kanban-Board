@@ -13,7 +13,14 @@ type HeaderProps = {
 
 function Header({ boardOpen, setBoardOpen }: HeaderProps) {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
+  const [boardType, setBoardType] = useState<"edit" | "add">("add");
   console.log(boardOpen);
+
+  function openEditModel() {
+    setBoardType("edit");
+    setBoardOpen(true);
+  }
+
   return (
     <div className="p-4 fixed bg-white dark:bg-[#2b2c37] z-50 right-0 left-0">
       <header className="flex justify-between dark:text-white items-center">
@@ -30,7 +37,10 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
               className="w-3 ml-2 md:hidden cursor-pointer"
               src={openDropDown ? iconUp : iconDown}
               alt="dropdown icon"
-              onClick={() => setOpenDropDown((prevState) => !prevState)}
+              onClick={() => {
+                setOpenDropDown((prevState) => !prevState);
+                setBoardType("add");
+              }}
             />
           </div>
         </div>
@@ -42,6 +52,7 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
             src={ellipsis}
             alt="ellipsis icon"
             className="cursor-pointer h-6 "
+            onClick={openEditModel}
           />
         </div>
       </header>
@@ -53,7 +64,12 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
         />
       )}
 
-      {boardOpen && <CreateEditBoardModal setBoardOpen={setBoardOpen} />}
+      {boardOpen && (
+        <CreateEditBoardModal
+          setBoardOpen={setBoardOpen}
+          boardType={boardType}
+        />
+      )}
     </div>
   );
 }

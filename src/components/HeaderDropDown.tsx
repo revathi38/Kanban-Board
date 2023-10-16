@@ -50,7 +50,7 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
               <>
                 <div
                   key={board.id}
-                  className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer ${
+                  className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer dark:text-white ${
                     board.isActive &&
                     `bg-[#635fc7] rounded-r-full text-white mr-8`
                   }`}
