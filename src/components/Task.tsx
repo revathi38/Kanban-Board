@@ -1,4 +1,4 @@
-import React, { DragEvent } from "react";
+import { DragEvent } from "react";
 import { Task as TaskType } from "../global";
 
 type TaskProps = {

@@ -1,4 +1,3 @@
-import { shuffle } from "lodash";
 import { Column as ColumnType } from "../global";
 import { useEffect, useState } from "react";
 import Task from "./Task";

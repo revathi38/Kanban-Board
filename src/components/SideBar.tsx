@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Board } from "../global";
+
 import boardIcon from "../assets/icon-board.svg";
 import lightIcon from "../assets/icon-light-theme.svg";
 import darkIcon from "../assets/icon-dark-theme.svg";
@@ -14,14 +14,10 @@ import CreateEditBoardModal from "../modals/CreateEditBoardModal";
 type SideBarProps = {
   isSideBarOpen: boolean;
   setIsSideBarOpen: (val: boolean) => void;
-  setBoardOpen: (val: boolean) => void;
+  setBoardOpen?: (val: boolean) => void;
 };
 
-const SideBar = ({
-  isSideBarOpen,
-  setIsSideBarOpen,
-  setBoardOpen,
-}: SideBarProps) => {
+const SideBar = ({ isSideBarOpen, setIsSideBarOpen }: SideBarProps) => {
   const [colorTheme, setTheme] = useDarkMode();
 
   const [darkSide, setDarkSide] = useState<boolean>(
