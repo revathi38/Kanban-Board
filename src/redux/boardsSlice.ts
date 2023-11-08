@@ -19,8 +19,16 @@ const boardsSlice = createSlice({
       };
       state.push(newBoard);
     },
+    dropTask: (state, action) => {
+      const { colIndex, prevcolIndex, taskIndex } = action.payload;
+
+      const board = state.find((b) => b.isActive);
+      const col = board.columns.find((_, i) => i === prevcolIndex);
+      const task = col.tasks.splice(taskIndex, 1)[0];
+      board.columns.find((_, i) => i === colIndex).tasks.push(task);
+    },
   },
 });
 
-export const { createBoard } = boardsSlice.actions;
+export const { createBoard, dropTask } = boardsSlice.actions;
 export default boardsSlice.reducer;

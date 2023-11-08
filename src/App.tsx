@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Header boardOpen={boardModalOpen} setBoardOpen={setBoardModalOpen} />
-      <Home />
+      <Home setBoardOpen={setBoardModalOpen} />
 
       <Center />
     </>

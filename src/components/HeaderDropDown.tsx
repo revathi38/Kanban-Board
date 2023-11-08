@@ -64,6 +64,7 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
           <div
             className={`px-5 py-4 flex items-baseline space-x-2 cursor-pointer `}
             onClick={() => {
+              console.log("HeaderDropDown");
               setOpenDropDown(false);
               setBoardOpen(true);
             }}

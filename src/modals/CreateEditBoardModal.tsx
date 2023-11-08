@@ -75,23 +75,19 @@ const CreateEditBoardModal = ({
           </label>
           {newColumns.map((column: Column) => {
             return (
-              <>
-                <div className="flex items-center w-full" key={column.id}>
-                  <input
-                    className="bg-transparent border-[0.5px] border-gray-600 px-4 py-2 rounded-md outline-[1px] focus:outline-[#635f67] flex-grow"
-                    value={column.name}
-                    type="text"
-                    onChange={(e) =>
-                      handleColumnInput(column.id, e.target.value)
-                    }
-                  />
-                  <img
-                    src={crossIcon}
-                    alt="cross icon"
-                    className="m-4 cursor-pointer"
-                  />
-                </div>
-              </>
+              <div className="flex items-center w-full" key={column.id}>
+                <input
+                  className="bg-transparent border-[0.5px] border-gray-600 px-4 py-2 rounded-md outline-[1px] focus:outline-[#635f67] flex-grow"
+                  value={column.name}
+                  type="text"
+                  onChange={(e) => handleColumnInput(column.id, e.target.value)}
+                />
+                <img
+                  src={crossIcon}
+                  alt="cross icon"
+                  className="m-4 cursor-pointer"
+                />
+              </div>
             );
           })}
 
