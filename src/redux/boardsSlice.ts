@@ -19,16 +19,27 @@ const boardsSlice = createSlice({
       };
       state.push(newBoard);
     },
-    dropTask: (state, action) => {
+    deleteBoard: (state) => {
+      const board = state.find((board) => board.isActive);
+      board && state.splice(state.indexOf(board), 1);
+    },
+    dropTask: (
+      state,
+      action: PayloadAction<{
+        colIndex: number;
+        prevcolIndex: number;
+        taskIndex: number;
+      }>
+    ) => {
       const { colIndex, prevcolIndex, taskIndex } = action.payload;
 
       const board = state.find((b) => b.isActive);
-      const col = board.columns.find((_, i) => i === prevcolIndex);
-      const task = col.tasks.splice(taskIndex, 1)[0];
-      board.columns.find((_, i) => i === colIndex).tasks.push(task);
+      const col = board?.columns.find((_, i) => i === prevcolIndex);
+      const task = col?.tasks.splice(taskIndex, 1)[0];
+      task && board?.columns.find((_, i) => i === colIndex)?.tasks.push(task);
     },
   },
 });
 
-export const { createBoard, dropTask } = boardsSlice.actions;
+export const { createBoard, dropTask, deleteBoard } = boardsSlice.actions;
 export default boardsSlice.reducer;

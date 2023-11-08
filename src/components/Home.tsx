@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RootState } from "../redux/store";
 import { Board } from "../global";
 import Column from "./Column";
+import CreateEditBoardModal from "../modals/CreateEditBoardModal";
 
 type HomeProps = {
   setBoardOpen: (val: boolean) => void;
@@ -18,6 +19,12 @@ const Home = ({ setBoardOpen }: HomeProps) => {
 
   const columns = board?.columns ?? [];
   // console.log(columns);
+
+  const [isBoardModalOpen, setIsBoardModalOpen] = useState(false);
+
+  const openEditModal = () => {
+    setIsBoardModalOpen(true);
+  };
 
   return (
     <div
@@ -36,12 +43,22 @@ const Home = ({ setBoardOpen }: HomeProps) => {
             return <Column key={col.id} col={col} colIndex={index} />;
           })}
 
-          <div className="h-screen dark:bg-[#2b2c3740] flex justify-center items-center font-bold text-2xl hover:text-[#635FC7] transition duration-300 cursor-pointer bg-[#E9EFFA] scrollbar-hide mb-2 mx-5 pt-[90px] min-w-[280px] text-[#828f83] mt-[135px] rounded-lg ">
+          <div
+            className="h-screen dark:bg-[#2b2c3740] flex justify-center items-center font-bold text-2xl hover:text-[#635FC7] transition duration-300 cursor-pointer bg-[#E9EFFA] scrollbar-hide mb-2 mx-5 pt-[90px] min-w-[280px] text-[#828f83] mt-[135px] rounded-lg "
+            onClick={openEditModal}
+          >
             + New Column
           </div>
         </>
       ) : (
         <></>
+      )}
+
+      {isBoardModalOpen && (
+        <CreateEditBoardModal
+          boardType="edit"
+          setBoardOpen={setIsBoardModalOpen}
+        />
       )}
     </div>
   );

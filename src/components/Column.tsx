@@ -27,26 +27,30 @@ const Column = ({ col, colIndex }: ColumnProps) => {
   const [color, setColor] = useState("");
 
   useEffect(() => {
-    setColor(colors.pop());
+    setColor(colors.pop() ?? "");
   }, []);
 
-  const handleDrop = (e) => {
-    const { prevcolIndex, taskIndex } = JSON.parse(
-      e.dataTransfer.getData("text")
-    );
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const dataTransfer = e.dataTransfer;
 
-    dispatch(dropTask({ colIndex, prevcolIndex, taskIndex }));
+    if (dataTransfer) {
+      const { prevcolIndex, taskIndex } = JSON.parse(
+        dataTransfer.getData("text")
+      );
+
+      dispatch(dropTask({ colIndex, prevcolIndex, taskIndex }));
+    }
   };
 
-  const handleOnDragOver = (e) => {
+  const handleOnDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
   return (
     <div
       className="scrollbar-hide mx-5 pt-[90px] min-w-[280px]"
-      onDrop={handleDrop}
-      onDragOver={handleOnDragOver}
+      onDrop={(e) => handleDrop(e)}
+      onDragOver={(e) => handleOnDragOver(e)}
     >
       <div className="flex items-center gap-2 font-semibold tracking-widest md:tracking-[.2em] text-[#828fa3]">
         <div className={`w-4 h-4 ${color} rounded-full`}></div>

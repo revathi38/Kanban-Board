@@ -5,6 +5,9 @@ import { useState } from "react";
 import ellipsis from "../assets/icon-vertical-ellipsis.svg";
 import HeaderDropDown from "./HeaderDropDown";
 import CreateEditBoardModal from "../modals/CreateEditBoardModal";
+import ElipsisMenu from "./EllipsisMenu";
+import { useDispatch } from "react-redux";
+import { deleteBoard } from "../redux/boardsSlice";
 
 type HeaderProps = {
   boardOpen: boolean;
@@ -14,11 +17,27 @@ type HeaderProps = {
 function Header({ boardOpen, setBoardOpen }: HeaderProps) {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
   const [boardType, setBoardType] = useState<"edit" | "add">("add");
-  console.log(boardOpen);
+
+  const [isEllipseModalOpen, setIsEllipseModalOpen] = useState(false);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const openEllipseModal = () => {
+    setIsEllipseModalOpen((prev) => !prev);
+  };
 
   function openEditModel() {
     setBoardType("edit");
     setBoardOpen(true);
+    setIsEllipseModalOpen(false);
+  }
+
+  function openDeleteModel() {
+    setIsDeleteModalOpen(true);
+    setIsEllipseModalOpen(false);
+    dispatch(deleteBoard());
   }
 
   return (
@@ -45,14 +64,14 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
           </div>
         </div>
         {/** rightSide */}
-        <div className="flex items-center space-x-4 md:space-x-6">
+        <div className="flex items-center space-x-4 md:space-x-6 ">
           <button className="button hidden md:block">+ Add New Task</button>
           <button className="button py-1 px-3 md:hidden">+</button>
           <img
             src={ellipsis}
             alt="ellipsis icon"
-            className="cursor-pointer h-6 "
-            onClick={openEditModel}
+            className="cursor-pointer h-8 px-2 py-1"
+            onClick={openEllipseModal}
           />
         </div>
       </header>
@@ -69,6 +88,18 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
           setBoardOpen={setBoardOpen}
           boardType={boardType}
         />
+      )}
+
+      {isEllipseModalOpen && (
+        <ElipsisMenu
+          type="Boards"
+          setOpenEditModal={openEditModel}
+          setOpenDeleteModal={openDeleteModel}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <div className="absolute top-1/2 left-1/2 ">Delete</div>
       )}
     </div>
   );
