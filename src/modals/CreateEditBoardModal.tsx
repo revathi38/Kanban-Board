@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import crossIcon from "../assets/icon-cross.svg";
 import { Column } from "../global";
-import { useDispatch } from "react-redux";
-import { createBoard } from "../redux/boardsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createBoard, editBoard } from "../redux/boardsSlice";
+import { RootState } from "../redux/store";
 
 type CreateEditBoardModalProps = {
   setBoardOpen: (val: boolean) => void;
@@ -22,6 +23,17 @@ const CreateEditBoardModal = ({
 
   const [boardName, setBoardName] = useState<string>("");
 
+  const board = useSelector((state: RootState) => state.boards).find(
+    (b) => b.isActive
+  );
+
+  useEffect(() => {
+    if (boardType === "edit" && board) {
+      setBoardName(board.name);
+      setNewColumns(board.columns);
+    }
+  }, []);
+
   const dispatch = useDispatch();
 
   function handleColumnInput(id: string, newColumnName: string) {
@@ -34,6 +46,27 @@ const CreateEditBoardModal = ({
       return arr;
     });
   }
+
+  const submitChanges = () => {
+    if (boardType === "add") {
+      dispatch(
+        createBoard({
+          id: uuidv4(),
+          name: boardName,
+          columns: newColumns,
+        })
+      );
+    } else {
+      dispatch(
+        editBoard({
+          id: board?.id,
+          name: boardName,
+          columns: newColumns,
+        })
+      );
+    }
+    setBoardOpen(false);
+  };
 
   return (
     <div
@@ -106,16 +139,7 @@ const CreateEditBoardModal = ({
 
             <button
               className="rounded-full bg-[#635fc7] py-2 text-white hover:opacity-70 dark:text-[#635fc7] dark:bg-white"
-              onClick={() => {
-                dispatch(
-                  createBoard({
-                    id: uuidv4(),
-                    name: boardName,
-                    columns: newColumns,
-                  })
-                );
-                setBoardOpen(false);
-              }}
+              onClick={submitChanges}
             >
               {boardType === "edit" ? "Save Changes" : "Create New Board"}
             </button>

@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
 import boardIcon from "../assets/icon-board.svg";
@@ -10,6 +10,7 @@ import useDarkMode from "../hooks/useDarkMode";
 import hideSideBarIcon from "../assets/icon-hide-sidebar.svg";
 import showSideBarIcon from "../assets/icon-show-sidebar.svg";
 import CreateEditBoardModal from "../modals/CreateEditBoardModal";
+import { setIsActiveBoard } from "../redux/boardsSlice";
 
 type SideBarProps = {
   isSideBarOpen: boolean;
@@ -25,6 +26,8 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen }: SideBarProps) => {
   );
 
   const [isBoardModalOpen, setIsBoardModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const toggleDarkMode = () => {
     setDarkSide((prevState) => !prevState);
@@ -63,9 +66,9 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen }: SideBarProps) => {
                         " bg-[#635fc7] rounded-r-full text-white mr-8 "
                       } `}
                       key={board.id}
-                      // onClick={() => {
-                      //   dispatch(boardsSlice.actions.setBoardActive({ index }));
-                      // }}
+                      onClick={() => {
+                        dispatch(setIsActiveBoard({ id: board.id }));
+                      }}
                     >
                       <img src={boardIcon} className="  filter-white  h-4 " />{" "}
                       <p className=" text-lg font-bold ">{board.name}</p>
