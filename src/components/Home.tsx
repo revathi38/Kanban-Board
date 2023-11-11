@@ -5,12 +5,15 @@ import { RootState } from "../redux/store";
 import { Board } from "../global";
 import Column from "./Column";
 import CreateEditBoardModal from "../modals/CreateEditBoardModal";
+import useWindowSize from "../hooks/useWindowSize";
 
 type HomeProps = {
   setBoardOpen: (val: boolean) => void;
 };
 
 const Home = ({ setBoardOpen }: HomeProps) => {
+  const { width } = useWindowSize();
+
   const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(true);
 
   const boards: Board[] = useSelector((state: RootState) => state.boards);
@@ -29,14 +32,16 @@ const Home = ({ setBoardOpen }: HomeProps) => {
   return (
     <div
       className={`bg-[#f4f7fd] h-screen dark:bg-[#20212c] overflow-x-scroll flex ${
-        isSideBarOpen ? "ml-[261px]" : ""
+        width >= 768 && isSideBarOpen ? "ml-[261px]" : ""
       } `}
     >
-      <SideBar
-        isSideBarOpen={isSideBarOpen}
-        setIsSideBarOpen={setIsSideBarOpen}
-        setBoardOpen={setBoardOpen}
-      />
+      {width >= 768 && (
+        <SideBar
+          isSideBarOpen={isSideBarOpen}
+          setIsSideBarOpen={setIsSideBarOpen}
+          setBoardOpen={setBoardOpen}
+        />
+      )}
       {columns?.length > 0 ? (
         <>
           {columns?.map((col, index) => {

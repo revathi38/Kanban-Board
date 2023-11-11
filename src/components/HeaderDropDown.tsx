@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import boardIcon from "../assets/icon-board.svg";
 import lightIcon from "../assets/icon-light-theme.svg";
 import darkIcon from "../assets/icon-dark-theme.svg";
 import { Switch } from "@headlessui/react";
 import useDarkMode from "../hooks/useDarkMode";
+import { setIsActiveBoard } from "../redux/boardsSlice";
 
 type HeaderDropDownProps = {
   setBoardOpen: (val: boolean) => void;
@@ -17,6 +18,7 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
   setOpenDropDown,
 }) => {
   const [colorTheme, setTheme] = useDarkMode();
+  const dispatch = useDispatch();
 
   const [darkSide, setDarkSide] = useState<boolean>(
     colorTheme === "light" ? true : false
@@ -54,6 +56,10 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
                     board.isActive &&
                     `bg-[#635fc7] rounded-r-full text-white mr-8`
                   }`}
+                  onClick={() => {
+                    dispatch(setIsActiveBoard({ id: board.id }));
+                    setOpenDropDown(false);
+                  }}
                 >
                   <img src={boardIcon} alt="board icon" className="h-4" />
                   <p className="font-bold text-lg">{board.name}</p>
@@ -74,6 +80,7 @@ const HeaderDropDown: React.FC<HeaderDropDownProps> = ({
               Create New Board
             </p>
           </div>
+
           <div className="flex items-center justify-center bg-slate-100 dark:bg-[#20212c] p-4 mx-2 rounded-lg space-x-2">
             <img src={lightIcon} alt="sun indicating lightmode" />
             <Switch

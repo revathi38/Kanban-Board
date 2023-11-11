@@ -57,7 +57,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen }: SideBarProps) => {
                 ALL BOARDS ({boards?.length})
               </h3>
 
-              <div className="  dropdown-borad flex flex-col h-[70vh]  justify-between ">
+              <div className="  dropdown-board flex flex-col h-[70vh]  justify-between ">
                 <div>
                   {boards.map((board) => (
                     <div
