@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import data from "../data.json";
-import { Board } from "../global";
+import { Board, CreateTaskType, Task } from "../global";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState: Board[] = data.boards;
@@ -42,6 +42,22 @@ const boardsSlice = createSlice({
         return board;
       });
     },
+    addTask: (state, action: PayloadAction<CreateTaskType>) => {
+      const { title, description, subtasks, status, columnId } = action.payload;
+      const board = state.find((board) => board.isActive);
+      const column = board?.columns.find((col) => col.id === columnId);
+
+      if (title && description && subtasks && status) {
+        const newTask: Task = {
+          id: uuidv4(),
+          title,
+          description,
+          subtasks,
+          status,
+        };
+        column?.tasks.push(newTask);
+      }
+    },
     dropTask: (
       state,
       action: PayloadAction<{
@@ -57,6 +73,26 @@ const boardsSlice = createSlice({
       const task = col?.tasks.splice(taskIndex, 1)[0];
       task && board?.columns.find((_, i) => i === colIndex)?.tasks.push(task);
     },
+
+    setSubTaskCompleted: (
+      state,
+      action: PayloadAction<{
+        columnId: string;
+        taskId: string;
+        subTaskId: string;
+      }>
+    ) => {
+      const { columnId, taskId, subTaskId } = action.payload;
+
+      const board = state.find((b) => b.isActive);
+      const column = board?.columns.find((col) => col.id === columnId);
+      const task = column?.tasks.find((t) => t.id === taskId);
+      const subTask = task?.subtasks.find((sub) => sub.id === subTaskId);
+
+      if (subTask) {
+        subTask.isCompleted = !subTask.isCompleted;
+      }
+    },
   },
 });
 
@@ -66,6 +102,8 @@ export const {
   deleteBoard,
   editBoard,
   setIsActiveBoard,
+  addTask,
+  setSubTaskCompleted,
 } = boardsSlice.actions;
 
 export default boardsSlice.reducer;

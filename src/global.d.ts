@@ -1,3 +1,6 @@
+import { partial } from "lodash";
+import Task from "./components/Task";
+
 export type Board = {
   id: string;
   name: string;
@@ -24,3 +27,5 @@ export type SubTask = {
   title: string;
   isCompleted: boolean;
 };
+
+export type CreateTaskType = Partial<Task> & { columnId: string };

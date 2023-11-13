@@ -63,6 +63,7 @@ const Column = ({ col, colIndex }: ColumnProps) => {
             task={task}
             colIndex={colIndex}
             taskIndex={index}
+            columnId={col.id}
           />
         );
       })}

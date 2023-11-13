@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import crossIcon from "../assets/icon-cross.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { addTask } from "../redux/boardsSlice";
 
 type Props = {
   setIsOpenTaskModel: (val: boolean) => void;
@@ -21,7 +22,17 @@ const CreateEditTaskModel = ({ setIsOpenTaskModel }: Props) => {
     (board) => board.isActive
   );
 
+  const dispatch = useDispatch();
+
   const columns = board?.columns ?? [];
+
+  const [selectedColumnName, setSelectedColumnName] = useState(columns[0].name);
+  const [selectedColumnId, setSelectedColumnId] = useState(columns[0].id);
+
+  const handleSelectedColumn = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedColumnName(e.target.value);
+    setSelectedColumnId(columns[e.target.selectedIndex].id);
+  };
 
   return (
     <div
@@ -73,8 +84,18 @@ const CreateEditTaskModel = ({ setIsOpenTaskModel }: Props) => {
           {subtasks.map((subtask, index) => (
             <div key={index} className=" flex items-center w-full ">
               <input
-                onChange={() => {
+                onChange={(e) => {
                   // onChangeSubtasks(subtask.id, e.target.value);
+                  setSubtasks((prev) => {
+                    const subTaskCopy = [...prev];
+                    const subTaskInput = subTaskCopy.find(
+                      (sub) => sub.id === subtask.id
+                    );
+                    if (subTaskInput) {
+                      subTaskInput.title = e.target.value;
+                    }
+                    return subTaskCopy;
+                  });
                 }}
                 type="text"
                 value={subtask.title}
@@ -108,8 +129,8 @@ const CreateEditTaskModel = ({ setIsOpenTaskModel }: Props) => {
             Current Status
           </label>
           <select
-            value={status}
-            // onChange={onChangeStatus}
+            value={selectedColumnName}
+            onChange={(e) => handleSelectedColumn(e)}
             className=" select-status flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] outline-none"
           >
             {columns.map((column, index) => (
@@ -118,16 +139,20 @@ const CreateEditTaskModel = ({ setIsOpenTaskModel }: Props) => {
           </select>
           <button
             onClick={() => {
-              // const isValid = validate();
-              // if (isValid) {
-              //   onSubmit(type);
-              //   setIsAddTaskModalOpen(false);
-              //   type === "edit" && setIsTaskModalOpen(false);
-              // }
+              dispatch(
+                addTask({
+                  title,
+                  description,
+                  subtasks,
+                  status: selectedColumnName,
+                  columnId: selectedColumnId,
+                })
+              );
+              setIsOpenTaskModel(false);
             }}
             className=" w-full items-center text-white bg-[#635fc7] py-2 rounded-full "
           >
-            {/* {type === "edit" ? " save edit" : "Create task"} */}
+            {/* {type === "edit" ? " save edit" : "Create task"} */}Create Task
           </button>
         </div>
       </div>

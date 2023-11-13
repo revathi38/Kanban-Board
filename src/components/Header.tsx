@@ -44,7 +44,7 @@ function Header({ boardOpen, setBoardOpen }: HeaderProps) {
     setIsEllipseModalOpen(false);
     dispatch(deleteBoard());
   }
-  const [isOpenTaskModel, setIsOpenTaskModel] = useState<boolean>(true);
+  const [isOpenTaskModel, setIsOpenTaskModel] = useState<boolean>(false);
 
   return (
     <>
